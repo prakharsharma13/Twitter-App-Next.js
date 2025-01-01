@@ -1,7 +1,7 @@
-const Homepage = () => {
-  return (
-    <div className=''>Homepage</div>
-  )
-}
+import Image from "@/components/Image";
 
-export default Homepage
+const Homepage = () => {
+  return <div className=""></div>;
+};
+
+export default Homepage;
