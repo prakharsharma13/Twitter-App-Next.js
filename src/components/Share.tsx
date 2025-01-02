@@ -1,9 +1,21 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "./Image";
+import NextImage from "next/image";
+import { shareAction } from "@/actions";
 
 const Share = () => {
+  const [media, setMedia] = useState<File | null>(null);
+
+  const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setMedia(e.target.files[0]);
+    }
+  };
+
+  const previewURL = media ? URL.createObjectURL(media) : null;
   return (
-    <div className="p-4 flex gap-4">
+    <form className="p-4 flex gap-4" action={shareAction}>
       {/* AVATAR  */}
       <div className="relative w-10 h-10 rounded-full overflow-hidden">
         <Image
@@ -18,18 +30,34 @@ const Share = () => {
       <div className="flex-1 flex flex-col gap-4">
         <input
           type="text"
+          name="desc"
           placeholder="What is happening...?"
           className="bg-transparent outline-none placeholder:text-textGray text-xl"
         />
+        {/* PREVIEW IMAGE  */}
+        {previewURL && (
+          <div className="relative rounded-xl overflow-hidden">
+            <NextImage src={previewURL} alt="" width={600} height={600} />
+          </div>
+        )}
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex gap-4 flex-wrap">
-            <Image
-              path="public/icons/image.svg"
-              alt=""
-              w={20}
-              h={20}
-              className="cursor-pointer"
+            <input
+              type="file"
+              name="file"
+              onChange={handleMediaChange}
+              className="hidden"
+              id="file"
             />
+            <label htmlFor="file">
+              <Image
+                path="public/icons/image.svg"
+                alt=""
+                w={20}
+                h={20}
+                className="cursor-pointer"
+              />
+            </label>
             <Image
               path="public/icons/gif.svg"
               alt=""
@@ -71,7 +99,7 @@ const Share = () => {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
