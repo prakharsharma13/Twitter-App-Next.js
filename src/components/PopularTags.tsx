@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "./Image";
+import Link from "next/link";
 
 const PopularTags = () => {
   return (
@@ -72,6 +73,9 @@ const PopularTags = () => {
         <h2 className="text-textGrayLight font-bold">Open AI</h2>
         <span className="text-textGray text-sm">20k posts</span>
       </div>
+      <Link href="/" className="text-iconBlue">
+        Show more
+      </Link>
     </div>
   );
 };
