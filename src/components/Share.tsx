@@ -47,7 +47,7 @@ const Share = () => {
           className="bg-transparent outline-none placeholder:text-textGray text-xl"
         />
         {/* PREVIEW IMAGE  */}
-        {previewURL && (
+        {media?.type.includes("image") && previewURL && (
           <div className="relative rounded-xl overflow-hidden">
             <NextImage
               src={previewURL}
@@ -70,6 +70,12 @@ const Share = () => {
             >
               Edit
             </div>
+            <div
+              className="absolute top-2 right-2 bg-black bg-opacity-50 text-white h-8 w-8 flex items-center justify-center rounded-full cursor-pointer font-bold text-sm"
+              onClick={() => setMedia(null)}
+            >
+              X
+            </div>
           </div>
         )}
         {isEditorOpen && previewURL && (
@@ -80,6 +86,17 @@ const Share = () => {
             setSettings={setSettings}
           />
         )}
+        {media?.type.includes("video") && previewURL && (
+          <div className="relative">
+            <video src={previewURL} controls />
+            <div
+              className="absolute top-2 right-2 bg-black bg-opacity-50 text-white h-8 w-8 flex items-center justify-center rounded-full cursor-pointer font-bold text-sm"
+              onClick={() => setMedia(null)}
+            >
+              X
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex gap-4 flex-wrap">
             <input
@@ -88,6 +105,7 @@ const Share = () => {
               onChange={handleMediaChange}
               className="hidden"
               id="file"
+              accept="image/*, video/*"
             />
             <label htmlFor="file">
               <Image
