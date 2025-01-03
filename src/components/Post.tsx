@@ -2,8 +2,32 @@ import React from "react";
 import Image from "./Image";
 import PostInfo from "./PostInfo";
 import PostInteraction from "./PostInteraction";
+import { imagekit } from "@/utils";
 
-const Post = () => {
+interface FileDetailsResponse {
+  width: number;
+  height: number;
+  filePath: string;
+  url: string;
+  fileType: string;
+  customMetadata?: { sensitive: boolean };
+}
+
+const Post = async () => {
+  const getFileDetails = async (
+    fileId: string
+  ): Promise<FileDetailsResponse> => {
+    return new Promise((resolve, reject) => {
+      imagekit.getFileDetails(fileId, function (error, result) {
+        if (error) reject(error);
+        else resolve(result as FileDetailsResponse);
+      });
+    });
+  };
+
+  const fileDetails = await getFileDetails("6778212b432c476416d65a18");
+
+  console.log(fileDetails);
   return (
     <div className="p-4 border-y-[1px] border-borderGray">
       {/* POST TYPE  */}
@@ -51,7 +75,16 @@ const Post = () => {
             autem aspernatur voluptate incidunt perferendis corrupti fugit,
             repellat assumenda alias quidem?
           </p>
-          <Image path="public/general/post.jpeg" alt="" w={600} h={600} />
+          {/* <Image path="public/general/post.jpeg" alt="" w={600} h={600} /> */}
+          {fileDetails && (
+            <Image
+              path={fileDetails.filePath}
+              alt=""
+              w={fileDetails.width}
+              h={fileDetails.height}
+              className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}
+            />
+          )}
           <PostInteraction />
         </div>
       </div>
